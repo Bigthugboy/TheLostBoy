@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class ClothServiceImpl implements ClothService{
+public class ClothServiceImpl implements ClothService {
     private final ClothRepo clothRepo;
 
 
@@ -28,8 +28,8 @@ public class ClothServiceImpl implements ClothService{
     public PostCloth post(PostRequest request) {
         Cloth cloth = new Cloth();
         ModelMapper modelMapper = new ModelMapper();
-      cloth =  modelMapper.map(request,Cloth.class);
-      var savedCloth = clothRepo.save(cloth);
+        cloth = modelMapper.map(request, Cloth.class);
+        var savedCloth = clothRepo.save(cloth);
         return PostCloth.builder()
                 .clothId(savedCloth.getId())
                 .CollectionName(savedCloth.getCollectionName())
@@ -38,7 +38,7 @@ public class ClothServiceImpl implements ClothService{
 
     @Override
     public DeleteCloth delete(DeleteRequest request) {
-    Optional<Cloth> cloth = clothRepo.findById(request.getId());
+        Optional<Cloth> cloth = clothRepo.findById(request.getId());
         cloth.ifPresent(clothRepo::delete);
         throw new ResourceNotFoundException("clothId not found ");
     }
@@ -47,9 +47,18 @@ public class ClothServiceImpl implements ClothService{
     public UpdateCloth update(UpdateRequest request) {
         Optional<Cloth> cloth = clothRepo.findById(request.getClothId());
         ModelMapper modelMapper = new ModelMapper();
-         modelMapper.map(request,cloth);
-        cloth.ifPresent(clothRepo::save);
-        throw new RequestValidationException("Unable to save entity");
-    }
 
+        if (cloth.isPresent()) {
+            Cloth updatedCloth = modelMapper.map(request, Cloth.class);
+            clothRepo.save(updatedCloth);
+            return UpdateCloth.builder()
+                    .cloth(cloth.get())
+                    .id(updatedCloth.getId())
+
+                    .build();
+        } else {
+            throw new RequestValidationException("Unable to save entity");
+        }
+
+    }
 }

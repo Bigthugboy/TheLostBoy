@@ -2,23 +2,22 @@ package codewiththugboy.clotth.dto.request;
 
 import codewiththugboy.clotth.data.model.ClothSize;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
 public class UpdateRequest {
 
     private Long clothId;
-    private String CollectionName;
+    private String collectionName;
     private ClothSize clothSize;
     private double price;
     private String clothMaterial;
     private String clothType;
     private String clothStyle;
+
 
 }
