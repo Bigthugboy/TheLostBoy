@@ -18,11 +18,10 @@ import java.util.List;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Customer implements UserDetails {
     @jakarta.persistence.Id
     @Column(name = "id", nullable = false)
