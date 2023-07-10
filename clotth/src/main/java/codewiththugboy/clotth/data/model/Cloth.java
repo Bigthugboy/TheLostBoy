@@ -3,6 +3,8 @@ package codewiththugboy.clotth.data.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -20,4 +22,5 @@ public class Cloth {
     private String clothMaterial;
     private String clothType;
     private String clothStyle;
+    private LocalDateTime dateTime;
 }

@@ -13,6 +13,7 @@ import codewiththugboy.clotth.exceptions.RequestValidationException;
 import codewiththugboy.clotth.exceptions.ResourceNotFoundException;
 import codewiththugboy.clotth.services.ClothService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -31,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 
-
+@Slf4j
 class ClothApplicationTests {
     @Autowired
     private ClothService clothService;
@@ -120,7 +126,9 @@ class ClothApplicationTests {
         when(mockClothRepo.findById(any())).thenReturn(Optional.of(savedCloth));
 
         // Act
+        System.out.println(savedCloth);
         UpdateCloth result = clothService.update(request);
+        System.out.println(result);
 
         // Assert
         assertNotNull(result);
@@ -141,6 +149,26 @@ class ClothApplicationTests {
         assertThrows(RequestValidationException.class, () -> clothService.update(request));
         verify(mockClothRepo, never()).save(any());
     }
+//    @Test
+//    public void testGetAllCloth() {
+//        // Create a list of Cloth objects for testing
+//        List<Cloth> clothList = new ArrayList<>();
+//        clothList.add(new Cloth(1L, "\"ThugBoyCollection\"",ClothSize.SMALL,4000,"party","free","big"));
+//        clothList.add(new Cloth(2L, "\"ThugBoyCollection\"",ClothSize.EXTRA_EXTRA_LARGE,4300,"casual","free","free"));
+//        clothList.add(new Cloth(3L, "\"ThugBoyCollection\"",ClothSize.EXTRA_LARGE,800,"smart","body fitted","big"));
+//
+//        // Create a mock Page object with the clothList
+//        Page<Cloth> clothPage = new PageImpl<>(clothList);
+//
+//        // Mock the findAll() method of the clothRepo
+//        when(mockClothRepo.findAll(Pageable.unpaged())).thenReturn(clothPage);
+//
+//        // Call the getAllCloth() method
+//        Page<Cloth> result = clothService.getAllCloth(Pageable.unpaged());
+//
+//        // Assert that the returned Page matches the mock Page
+//        assertEquals(clothPage, result);
+//    }
 }
 
 

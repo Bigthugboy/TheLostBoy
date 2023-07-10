@@ -2,6 +2,8 @@ package codewiththugboy.clotth.dto.request;
 
 import lombok.*;
 
+
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -10,6 +12,7 @@ import lombok.*;
 public class DeleteRequest {
     private Long id;
     private String CollectionName;
+
 
     public DeleteRequest(Long clothId) {
     }

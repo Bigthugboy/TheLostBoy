@@ -13,9 +13,17 @@ import codewiththugboy.clotth.exceptions.RequestValidationException;
 import codewiththugboy.clotth.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+
+import org.springframework.data.domain.Page;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,13 +34,15 @@ public class ClothServiceImpl implements ClothService {
 
     @Override
     public PostCloth post(PostRequest request) {
-        Cloth cloth = new Cloth();
+        Cloth cloth ;
         ModelMapper modelMapper = new ModelMapper();
         cloth = modelMapper.map(request, Cloth.class);
+
         var savedCloth = clothRepo.save(cloth);
         return PostCloth.builder()
                 .clothId(savedCloth.getId())
                 .CollectionName(savedCloth.getCollectionName())
+//                .datePosted(DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy, hh:mm a").format(cloth.getDateTime()))
                 .build();
     }
 
@@ -40,25 +50,45 @@ public class ClothServiceImpl implements ClothService {
     public DeleteCloth delete(DeleteRequest request) {
         Optional<Cloth> cloth = clothRepo.findById(request.getId());
         cloth.ifPresent(clothRepo::delete);
+        DeleteCloth deleteCloth = new DeleteCloth();
+//        deleteCloth.setDateDeleted(cloth.get().getDateTime());
+        deleteCloth.setDeleted(true);
         throw new ResourceNotFoundException("clothId not found ");
     }
 
     @Override
     public UpdateCloth update(UpdateRequest request) {
-        Optional<Cloth> cloth = clothRepo.findById(request.getClothId());
-        ModelMapper modelMapper = new ModelMapper();
+        try{
+            Optional<Cloth> cloth = clothRepo.findById(request.getClothId());
+            ModelMapper modelMapper = new ModelMapper();
 
-        if (cloth.isPresent()) {
-            Cloth updatedCloth = modelMapper.map(request, Cloth.class);
-            clothRepo.save(updatedCloth);
-            return UpdateCloth.builder()
-                    .cloth(cloth.get())
-                    .id(updatedCloth.getId())
-
-                    .build();
-        } else {
-            throw new RequestValidationException("Unable to save entity");
+            if (cloth.isPresent()) {
+                Cloth updatedCloth = modelMapper.map(request, Cloth.class);
+                clothRepo.save(updatedCloth);
+                return UpdateCloth.builder()
+                        .cloth(cloth.get())
+                        .id(updatedCloth.getId())
+                        .build();
+            }
+        }catch (RequestValidationException e) {
+            e.getCause();
         }
 
+        return null;
+    }
+
+    @Override
+    public Page<Cloth> getAllCloth(Pageable pageable) {
+        pageable.getPageNumber();
+        return clothRepo.findAll(pageable);
+    }
+
+    @Override
+    public List<Cloth> getClothById(Long id) {
+        Optional<Cloth> cloth = clothRepo.findById(id);
+        if (cloth.isPresent()){
+            return cloth.stream().toList();
+        }
+       throw new ResourceNotFoundException("Cloth not found");
     }
 }

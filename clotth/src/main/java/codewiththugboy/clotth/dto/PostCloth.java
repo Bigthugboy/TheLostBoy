@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -13,5 +15,6 @@ import lombok.Setter;
 public class PostCloth {
     private long clothId;
     private String CollectionName;
+    private String datePosted;
 
 }
