@@ -12,6 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 public class PostRequest {
     private String collectionName;
+    private String designerName;
     private ClothSize clothSize ;
     private double price;
     private String clothMaterial;

@@ -18,6 +18,7 @@ public class UpdateRequest {
     private String clothMaterial;
     private String clothType;
     private String clothStyle;
+    private String designerName;
 
 
 }
