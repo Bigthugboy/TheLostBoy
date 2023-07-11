@@ -27,6 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -65,19 +66,23 @@ class ClothApplicationTests {
                 .clothSize(ClothSize.SMALL)
                 .clothMaterial("fabric")
                 .clothStyle("beach")
+                .designerName("deji")
                 .clothType("free")
                 .collectionName("ThugBoyCollection")
                 .price(4000)
                 .build();
         Cloth savedCloth = new Cloth();
         savedCloth.setId(1L);
+        LocalDate dateTime = LocalDate.now();
+        savedCloth.setDateTime(dateTime);
         when(mockClothRepo.save(any(Cloth.class))).thenReturn(savedCloth);
 
         // Act
-        PostCloth result = clothService.post(request);
+        PostCloth result = clothService.post(request,dateTime);
 
         // Assert
         assertEquals(1, result.getClothId());
+
         assertEquals("ThugBoyCollection",result.getCollectionName());
 
         // Add additional assertions as needed to verify the correctness of the returned result

@@ -8,14 +8,21 @@ import codewiththugboy.clotth.dto.request.DeleteRequest;
 import codewiththugboy.clotth.dto.request.PostRequest;
 import codewiththugboy.clotth.dto.request.UpdateRequest;
 import codewiththugboy.clotth.services.ClothService;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 
 @RestController
@@ -25,8 +32,8 @@ public class ClothController {
     private ClothService clothService;
 
     @PostMapping("/addCloth")
-    public ResponseEntity<PostCloth> postCloth(@RequestBody PostRequest request) {
-        PostCloth postCloth = clothService.post(request);
+    public ResponseEntity<PostCloth> postCloth(@RequestBody PostRequest request, LocalDate dateTime) {
+        PostCloth postCloth = clothService.post(request,dateTime);
         return ResponseEntity.status(HttpStatus.CREATED).body(postCloth);
     }
     @DeleteMapping("/deleteCloth")
@@ -44,13 +51,52 @@ public class ClothController {
         return ResponseEntity.ok(updateCloth);
     }
     @GetMapping("/cloths")
-    public ResponseEntity<Page<Cloth>> getAllCloth(Pageable pageable) {
-        Page<Cloth> clothPage = clothService.getAllCloth(pageable);
-        return ResponseEntity.ok(clothPage);
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getAllBooks(
+            @PathVariable(value = "pageNo", required = false) @DefaultValue({"0"}) @NonNull  String pageNo,
+            @PathVariable(value = "noOfItems", required = false) @DefaultValue({"10"}) @NonNull String numberOfItems) {
+
+        Map<String, Object> pageResult = clothService.getAllCloth(Integer.parseInt(pageNo), Integer.parseInt(numberOfItems));
+
+        return new ResponseEntity<>(pageResult, HttpStatus.OK);
     }
+
     @GetMapping("/getCloth/{clothId}")
     public ResponseEntity<List<Cloth>> getCloth(@PathVariable("clothId") Long clothId){
         List<Cloth> clothList = clothService.getClothById(clothId);
         return  ResponseEntity.ok(clothList);
     }
+    @GetMapping("/byDate")
+    public ResponseEntity<Stream<Cloth>> getClothsByDateAdded(
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate
+    ) {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        Stream<Cloth> clothStream = clothService.getClothsByDateAdded(start, end);
+        return ResponseEntity.ok(clothStream);
+    }
+
+    @GetMapping("/byDate/page")
+    public ResponseEntity<Page<Cloth>> getAllClothByDateAdded(
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate,
+            Pageable pageable
+    ) {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        Page<Cloth> clothPage =  clothService.getAllClothByDateAdded(start, end, pageable);
+        return ResponseEntity.ok(clothPage);
+    }
+    @GetMapping("/getClothByCollectionName")
+    public ResponseEntity<?> getBookByCollectionName(@RequestParam @NonNull @NotBlank String collectionName) {
+       Cloth cloth = clothService.findClothByCollectionName(collectionName);
+        return new ResponseEntity<>(cloth, HttpStatus.FOUND);
+    }
+    @GetMapping("/getClothByDesignerName")
+    public ResponseEntity<?> getBookByDesignerName(@RequestParam @NonNull @NotBlank String designerName) {
+        Cloth cloth = clothService.findClothByDesignerName(designerName);
+        return new ResponseEntity<>(cloth, HttpStatus.FOUND);
+    }
+
 }
