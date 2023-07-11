@@ -10,7 +10,7 @@
         <module name="EurekaServer" />
         <module name="config-server" />
         <module name="notification" />
-        <module name="discovery" />
+        <module name="gateway" />
         <module name="customer" />
         <module name="clotth" />
       </profile>
@@ -19,8 +19,8 @@
       <module name="clotth" target="20" />
       <module name="config-server" target="20" />
       <module name="customer" target="20" />
-      <module name="discovery" target="20" />
       <module name="EurekaServer" target="20" />
+      <module name="gateway" target="20" />
       <module name="notification" target="20" />
     </bytecodeTargetLevel>
   </component>
@@ -30,7 +30,7 @@
       <module name="clotth" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="customer" options="-parameters" />
-      <module name="discovery" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="notification" options="-parameters" />
     </option>
   </component>

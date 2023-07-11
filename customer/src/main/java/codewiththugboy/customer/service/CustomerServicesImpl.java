@@ -4,14 +4,17 @@ import codewiththugboy.customer.data.model.Customer;
 import codewiththugboy.customer.data.model.RoleType;
 import codewiththugboy.customer.data.repo.CustomerRepo;
 import codewiththugboy.customer.dto.request.AuthenticationRequest;
+import codewiththugboy.customer.dto.request.CreateCustomerDto;
 import codewiththugboy.customer.dto.request.RegisterRequest;
 import codewiththugboy.customer.dto.response.AuthenticationResponse;
 import codewiththugboy.customer.dto.response.RegisterResponse;
+import codewiththugboy.customer.xcepstion.DefaultExceptionsHandler;
 import codewiththugboy.customer.xcepstion.DuplicateEmailException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -45,5 +48,14 @@ public class CustomerServicesImpl implements CustomerServices{
     @Override
     public AuthenticationResponse login(AuthenticationRequest request) {
         return null;
+    }
+
+    @Override
+    public Customer registerCustomer(CreateCustomerDto dto) throws DefaultExceptionsHandler {
+        Customer customer = new Customer();
+        customer.setFirstName(dto.getFirstName());
+        customer.setLastName(dto.getLastName());
+        customer.setPassword(dto.getPassword());
+        return customer;
     }
 }

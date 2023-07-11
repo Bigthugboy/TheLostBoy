@@ -26,10 +26,12 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-gateway-dependencies</artifactId>
-            <version>4.0.6</version>
+            <artifactId>spring-cloud-starter</artifactId>
+            <version>4.0.3</version>
         </dependency>
 
 

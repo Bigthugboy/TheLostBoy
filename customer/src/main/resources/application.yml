@@ -12,4 +12,6 @@ spring:
     name: customer
   config:
     import: optional:configserver:http://localhost:8888
-
+#application:
+#  config:
+#    cloth-url: http://localhost:8099/api/v1/cloth

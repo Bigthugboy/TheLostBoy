@@ -22,6 +22,7 @@ import java.util.List;
 @Setter
 @ToString
 @NoArgsConstructor
+
 public class Customer implements UserDetails {
     @jakarta.persistence.Id
     @Column(name = "id", nullable = false)
