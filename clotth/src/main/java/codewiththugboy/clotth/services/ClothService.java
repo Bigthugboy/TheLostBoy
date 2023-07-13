@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 
 public interface ClothService {
-    PostCloth post(PostRequest request, LocalDate dateTime);
+    PostCloth post(PostRequest request);
     DeleteCloth delete(DeleteRequest request);
     UpdateCloth update (UpdateRequest request);
     Map<String, Object> getAllCloth(int numberOfPages, int numberOfItems);
@@ -27,5 +27,6 @@ public interface ClothService {
     Page<Cloth> getAllClothByDateAdded(LocalDate startDate, LocalDate endDate, Pageable pageable);
     Cloth findClothByCollectionName(String collectionName);
     Cloth findClothByDesignerName(String designerName);
+    List<Cloth>getClothByPrice(double price);
 
     }

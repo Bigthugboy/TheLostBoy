@@ -1,4 +1,4 @@
-CREATE TABLE cloth (  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE  IF NOT EXISTS cloth (   cloth_Id BIGINT PRIMARY KEY AUTO_INCREMENT,
                       date_time VARCHAR(255),
                       price FLOAT NOT NULL,
                       cloth_material VARCHAR(255),
@@ -9,3 +9,8 @@ CREATE TABLE cloth (  id BIGINT PRIMARY KEY AUTO_INCREMENT,
                       cover_image_file_name VARCHAR(255),
                       designer_name VARCHAR(255)
 ) engine=InnoDB;
+
+
+
+
+

@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class Cloth {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long clothId;
 
     private String collectionName;
     private String designerName;

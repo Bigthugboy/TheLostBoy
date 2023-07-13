@@ -12,24 +12,16 @@ import codewiththugboy.clotth.dto.request.UpdateRequest;
 import codewiththugboy.clotth.exceptions.RequestValidationException;
 import codewiththugboy.clotth.exceptions.ResourceNotFoundException;
 import codewiththugboy.clotth.services.ClothService;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.mockito.Mockito;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -72,13 +64,13 @@ class ClothApplicationTests {
                 .price(4000)
                 .build();
         Cloth savedCloth = new Cloth();
-        savedCloth.setId(1L);
+        savedCloth.setClothId(1L);
         LocalDate dateTime = LocalDate.now();
         savedCloth.setDateTime(dateTime);
         when(mockClothRepo.save(any(Cloth.class))).thenReturn(savedCloth);
 
         // Act
-        PostCloth result = clothService.post(request,dateTime);
+        PostCloth result = clothService.post(request);
 
         // Assert
         assertEquals(1, result.getClothId());
@@ -127,7 +119,7 @@ class ClothApplicationTests {
 
 
         Cloth savedCloth = new Cloth();
-        savedCloth.setId(1L);
+        savedCloth.setClothId(1L);
         when(mockClothRepo.findById(any())).thenReturn(Optional.of(savedCloth));
 
         // Act
@@ -135,8 +127,7 @@ class ClothApplicationTests {
         UpdateCloth result = clothService.update(request);
         System.out.println(result);
 
-        // Assert
-        assertNotNull(result);
+
         assertEquals(1L, result.getId());
         assertEquals("leather", savedCloth.getClothMaterial());
         assertEquals("party", savedCloth.getClothStyle());

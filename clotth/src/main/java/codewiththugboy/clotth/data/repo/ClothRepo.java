@@ -19,4 +19,5 @@ public interface ClothRepo extends JpaRepository<Cloth,Long> {
     Page<Cloth> findClothByDateTime(LocalDate startDate, LocalDate endDate, Pageable pageable);
     Optional<Cloth>findClothsByCollectionName(String collectionName);
     Optional<Cloth>findClothsByDesignerName(String designerName);
+    Optional<Cloth>findClothByPrice(double price);
 }
