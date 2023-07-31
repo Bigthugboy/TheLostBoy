@@ -25,10 +25,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
@@ -44,6 +41,7 @@ public class ClothServiceImpl implements ClothService {
         ModelMapper modelMapper = new ModelMapper();
         cloth = modelMapper.map(request, Cloth.class);
         cloth.setDateTime(LocalDate.now());
+        cloth.setClothId(String.valueOf(UUID.randomUUID()).replace("-",""));
         var savedCloth = clothRepo.save(cloth);
         return PostCloth.builder()
                 .clothId(savedCloth.getClothId())
@@ -54,7 +52,7 @@ public class ClothServiceImpl implements ClothService {
 
     @Override
     public DeleteCloth delete(DeleteRequest request) throws ResourceNotFoundException {
-        Optional<Cloth> cloth = clothRepo.findById(request.getId());
+        Optional<Cloth> cloth = clothRepo.findClothsByClothId(request.getClothId());
         cloth.ifPresent(clothRepo::delete);
         DeleteCloth deleteCloth = new DeleteCloth();
         deleteCloth.setMessage("cloth deleted successfully");
@@ -66,7 +64,7 @@ public class ClothServiceImpl implements ClothService {
     @Override
     public UpdateCloth update(UpdateRequest request) {
         try {
-            Optional<Cloth> cloth = clothRepo.findById(request.getClothId());
+            Optional<Cloth> cloth = clothRepo.findClothsByClothId(request.getClothId());
             ModelMapper modelMapper = new ModelMapper();
 
             if (cloth.isPresent()) {
@@ -75,7 +73,7 @@ public class ClothServiceImpl implements ClothService {
                 return UpdateCloth.builder()
                         .cloth(cloth.get())
                         .dateUpdated(LocalDate.now())
-                        .id(updatedCloth.getClothId())
+                        .clothId(updatedCloth.getClothId())
                         .build();
             }
         } catch (RequestValidationException e) {
@@ -128,30 +126,33 @@ public class ClothServiceImpl implements ClothService {
     }
 
     @Override
-    public Cloth findClothByCollectionName(String collectionName) {
+    public List<Cloth> findClothByCollectionName(String collectionName) {
         Optional<Cloth> cloth = clothRepo.findClothsByCollectionName(collectionName);
         if (cloth.isPresent()) {
-            return cloth.get();
+            return cloth.stream().toList();
         }
         throw new ResourceNotFoundException("Cloth not found");
     }
 
     @Override
-    public Cloth findClothByDesignerName(String designerName) {
+    public List<Cloth> findClothByDesignerName(String designerName) {
         Optional<Cloth> cloth = clothRepo.findClothsByDesignerName(designerName);
         if (cloth.isPresent()) {
-            return cloth.get();
+            return cloth.stream().toList();
         }
         throw new ResourceNotFoundException("Cloth not found");
     }
 
     @Override
-    public List<Cloth> getClothByPrice(double price) {
-        Optional<Cloth> cloth =clothRepo.findClothByPrice(price);
-        if (cloth.isPresent()) {
-            return cloth.stream().toList();
 
+        public List<Cloth> findClothByPriceRange(double minPrice, double maxPrice) throws ResourceNotFoundException {
+            return clothRepo.findClothByPriceBetween(minPrice, maxPrice);
         }
-        throw new ResourceNotFoundException("Cloth not found");
+
+
+
+    @Override
+    public Optional<Cloth> findByClothId(String clothId) throws ResourceNotFoundException {
+        return clothRepo.findClothsByClothId(clothId);
     }
 }

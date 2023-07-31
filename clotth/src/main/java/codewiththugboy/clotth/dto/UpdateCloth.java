@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UpdateCloth {
     private Cloth cloth;
-    private Long id;
+    private String clothId;
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")

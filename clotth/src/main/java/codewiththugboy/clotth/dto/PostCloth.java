@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class PostCloth {
-    private long clothId;
+    private String clothId;
     private String CollectionName;
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)

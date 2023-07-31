@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -19,5 +20,7 @@ public interface ClothRepo extends JpaRepository<Cloth,Long> {
     Page<Cloth> findClothByDateTime(LocalDate startDate, LocalDate endDate, Pageable pageable);
     Optional<Cloth>findClothsByCollectionName(String collectionName);
     Optional<Cloth>findClothsByDesignerName(String designerName);
-    Optional<Cloth>findClothByPrice(double price);
+    List<Cloth> findClothByPriceBetween(double minPrice, double maxPrice);
+    Optional<Cloth>findClothsByClothId(String clothId);
+
 }

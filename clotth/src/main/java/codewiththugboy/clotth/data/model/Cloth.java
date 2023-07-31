@@ -19,8 +19,8 @@ import java.time.LocalDate;
 public class Cloth {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long clothId;
-
+    private Long id;
+    private String ClothId;
     private String collectionName;
     private String designerName;
 
@@ -37,9 +37,10 @@ public class Cloth {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate dateTime;
 
-    private String coverImageFileName;
+    private String clothImage;
 
-    public Cloth(String collectionName, String designerName, ClothSize clothSize, double price, String clothMaterial, String clothType, String clothStyle, LocalDate dateTime, String coverImageFileName) {
+
+    public Cloth(String collectionName, String designerName, ClothSize clothSize, double price, String clothMaterial, String clothType, String clothStyle, LocalDate dateTime, String clothImage) {
         this.collectionName = collectionName;
         this.designerName = designerName;
         this.clothSize = clothSize;
@@ -48,7 +49,7 @@ public class Cloth {
         this.clothType = clothType;
         this.clothStyle = clothStyle;
         this.dateTime = dateTime;
-        this.coverImageFileName = coverImageFileName;
+        this.clothImage = clothImage;
     }
 }
 

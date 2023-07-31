@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
-public class DefaultExceptionsHandler {
+public class DefaultExceptionsHandler extends Throwable {
 
 
 
@@ -67,4 +67,5 @@ public class DefaultExceptionsHandler {
             return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-    }
+
+}

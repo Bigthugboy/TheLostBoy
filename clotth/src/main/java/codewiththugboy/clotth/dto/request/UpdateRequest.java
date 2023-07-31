@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 public class UpdateRequest {
 
-    private Long clothId;
+    private String clothId;
     private String collectionName;
     private ClothSize clothSize;
     private double price;

@@ -1,5 +1,6 @@
 package codewiththugboy.customer.dto.request;
 
+import codewiththugboy.customer.data.model.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequest {
+    private Address address;
     private String firstName;
     private String lastName;
     private String email;

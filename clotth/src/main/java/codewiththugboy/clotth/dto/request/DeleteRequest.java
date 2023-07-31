@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class DeleteRequest {
-    private Long id;
+    private String clothId;
     private String CollectionName;
 
 
